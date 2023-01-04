@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+
+  <div class="keys">
+    <div data-key="a" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="s" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="d" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="f" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="g" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="h" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="j" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="k" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="l" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="a" src="./assets/sounds/clap.wav"></audio>
+  <audio data-key="s" src="./assets/sounds/hihat.wav"></audio>
+  <audio data-key="d" src="./assets/sounds/kick.wav"></audio>
+  <audio data-key="f" src="./assets/sounds/openhat.wav"></audio>
+  <audio data-key="g" src="./assets/sounds/boom.wav"></audio>
+  <audio data-key="h" src="./assets/sounds/ride.wav"></audio>
+  <audio data-key="j" src="./assets/sounds/snare.wav"></audio>
+  <audio data-key="k" src="./assets/sounds/tom.wav"></audio>
+  <audio data-key="l" src="./assets/sounds/tink.wav"></audio>
+  <script>
+    const allKeys = [
+      {key: 'a', sound: document.querySelector("audio[data-key='a']"), div: document.querySelector("[data-key='a']")},
+      {key: 's', sound: document.querySelector("audio[data-key='s']"), div: document.querySelector("[data-key='s']")},
+      {key: 'd', sound: document.querySelector("audio[data-key='d']"), div: document.querySelector("[data-key='d']")},
+      {key: 'f', sound: document.querySelector("audio[data-key='f']"), div: document.querySelector("[data-key='f']")},
+      {key: 'g', sound: document.querySelector("audio[data-key='g']"), div: document.querySelector("[data-key='g']")},
+      {key: 'h', sound: document.querySelector("audio[data-key='h']"), div: document.querySelector("[data-key='h']")},
+      {key: 'j', sound: document.querySelector("audio[data-key='j']"), div: document.querySelector("[data-key='j']")},
+      {key: 'k', sound: document.querySelector("audio[data-key='k']"), div: document.querySelector("[data-key='k']")},
+      {key: 'l', sound: document.querySelector("audio[data-key='l']"), div: document.querySelector("[data-key='l']")}
+      ]
+
+    const keys = document.querySelectorAll('.key')
+    // const audios = document.querySelectorAll('audio')
+    // console.log(audios.length)
+    // const audiosArray = Array.from(audios)
+    let audio;
+keys.forEach(el => {
+    el.addEventListener('mousedown',(evt) => {
+        //console.log(evt.target.dataset.key || evt.target.parentNode.dataset.key)
+        const el = evt.target.classList.contains('key') ? evt.target : evt.target.parentNode
+
+        el.classList.add('playing')
+
+
+        let toPlay = getSound(el.dataset.key)
+        audio = new Audio(toPlay)
+        audio.play()
+
+
+      })
+
+    el.addEventListener('mouseup', removePlaying)
+
+})
+  document.addEventListener('keydown', (event) => {
+    console.log(event.keyCode)
+    let src;
+    switch(event.keyCode){
+      case 65:
+         src = getSound('a')
+        break;//83 68 70
+      case 83:
+        src = getSound('s')
+        break
+      case 68:
+        src = getSound('d')
+        break
+      case 70:
+        src = getSound('f')
+        break
+      case 71:
+        src = getSound('g')
+        break
+      case 72:
+        src = getSound('h')
+        break
+      case 74:
+        src = getSound('j')
+        break
+      case 75:
+        src = getSound('k')
+        break
+      case 76:
+        src = getSound('l')
+        break
+      default:
+        break
+
+    }
+    console.log(src)
+    if(src){
+      audio = new Audio(src)
+      audio.play()
+      
+    }
+  })
+
+  document.addEventListener('keyup', removePlaying)
+
+  function getSound(key){
+    let src;
+    allKeys.forEach((element) => {
+      if(element.key == key){
+        src = element.sound.src
+        element.div.classList.add('playing')
+      }
+    }
+    )
+    return src
+  }
+
+  function removePlaying(){
+    keys.forEach(k => k.classList.remove("playing"))
+  }
+  </script>
+</body>
+  </html>
